@@ -11,6 +11,9 @@ const Passport = sequelize.define('passport', {
   hoten: {
     type: Sequelize.STRING,
   },
+  hinh: {
+    type: Sequelize.STRING,
+  },
   gioitinh: {
     type: Sequelize.STRING,
   },
