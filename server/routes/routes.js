@@ -3,9 +3,10 @@ const router = express.Router()
 const passport = require('../controllers/PassportControllers')
 const AuthenticationController = require('../controllers/AuthenticationController')
 const AuthenticationControllerPolicy = require('../policies/AuthenticationControllerPolicy')
+const path = require('path');
 
 router.get('/', function(req, res) {
-  res.json({ message: 'Express is up!' });
+  res.sendFile('/client/dist/index.html', {root: '../'});
 });
 router.get('/passport', passport.view)
 router.post('/passport', passport.createNew)
