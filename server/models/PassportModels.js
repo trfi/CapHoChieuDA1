@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize')
-const {sequelize} = require('../models')
+const sequelize = require('../db')
 
 const Passport = sequelize.define('passport', {
   id_congdan: {
@@ -98,8 +98,8 @@ const Passport = sequelize.define('passport', {
 });
 
 // create table with Passport model
-// Passport.sync()
-//   .then(() => console.log('Passport table created successfully'))
-//   .catch(err => console.log('oooh, did you enter wrong database credentials?'));
+Passport.sync()
+  .then(() => console.log('Passport table created successfully'))
+  .catch(err => console.log('oooh, did you enter wrong database credentials?'));
   
 module.exports = Passport;

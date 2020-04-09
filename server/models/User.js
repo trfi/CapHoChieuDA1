@@ -1,4 +1,4 @@
-const {sequelize} = require('../models')
+const sequelize = require('../db')
 const Sequelize = require('sequelize')
 const bcrypt = require('bcrypt');
 
@@ -50,6 +50,10 @@ User.prototype.comparePassword = function (password) {
   console.log(this.password)
   return bcrypt.compare(password, this.password);
 }
+
+User.sync()
+  .then(() => console.log('User table created successfully'))
+  .catch(err => console.log('oooh, did you enter wrong database credentials?'));
 
 
 module.exports = User;
