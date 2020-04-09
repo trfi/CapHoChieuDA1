@@ -1,47 +1,85 @@
 <template>
-  <v-content>
-  <v-container>
-      <v-row>
-          <v-col cols="12" md="6">
-            <v-form
-              ref="form"
-              v-model="valid"
-              lazy-validation
-            >
-              <v-text-field
-                v-model="email"
-                :counter="10"
-                :rules="nameRules"
-                label="Email"
-                required
-                autocomplete="email"
-              ></v-text-field>
-
-              <v-text-field
-                v-model="password"
-                :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                :rules="[rules.required, rules.min]"
-                :type="show1 ? 'text' : 'password'"
-                name="input-10-1"
-                label="Mật khẩu"
-                hint="Ít nhất 6 ký tự"
-                counter
-                @click:append="show1 = !show1"
-              ></v-text-field>
-
-              <v-btn
-                :disabled="!valid"
-                color="success"
-                class="mr-4"
-                @click="login"
+  <v-app id="inspire">
+    <v-content>
+      <v-container
+        class="fill-height"
+        fluid
+      >
+        <v-row
+          align="center"
+          justify="center"
+        >
+          <v-col
+            cols="12"
+            sm="8"
+            md="4"
+          >
+            <v-card class="elevation-12">
+              <v-toolbar
+                dark
+                flat
               >
-                LOGIN
-              </v-btn>
-            </v-form>
+                <v-icon left>mdi-vuetify</v-icon>
+                <v-toolbar-title>Login Admin Dashboard</v-toolbar-title>
+                <v-spacer />
+                <v-tooltip bottom>
+                  <template>
+                    <v-btn
+                      icon
+                      large
+                      target="_blank"
+                    >
+                      <v-icon>mdi-code-tags</v-icon>
+                    </v-btn>
+                  </template>
+                  <span>Source</span>
+                </v-tooltip>
+                <v-tooltip right>
+                  <template>
+                    <v-btn
+                      icon
+                      large
+                      href="https://codepen.io/johnjleider/pen/pMvGQO"
+                      target="_blank"
+                    >
+                      <v-icon>mdi-codepen</v-icon>
+                    </v-btn>
+                  </template>
+                  <span>Codepen</span>
+                </v-tooltip>
+              </v-toolbar>
+              <v-card-text>
+                <v-form>
+                  <v-text-field
+                    color="green"
+                    label="Email"
+                    name="login"
+                    prepend-icon="mdi-account"
+                    type="text"
+                    v-model="email"
+                  />
+
+                  <v-text-field
+                    color="green"
+                    id="password"
+                    label="Password"
+                    name="password"
+                    prepend-icon="mdi-lock"
+                    type="password"
+                    v-model="password"
+                  />
+                </v-form>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer />
+                <v-btn width="100px" dark @click="login">Login</v-btn>
+              </v-card-actions>
+            </v-card>
           </v-col>
-      </v-row>
-  </v-container>
-  </v-content>
+        </v-row>
+      </v-container>
+    </v-content>
+  </v-app>
 </template>
 
 <script>

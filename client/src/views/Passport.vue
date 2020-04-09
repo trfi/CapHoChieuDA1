@@ -202,7 +202,7 @@
           :disabled="!valid"
           color="primary"
           class="mr-4"
-          @click="apply"
+          @click="apply(); snackbar = true"
         >
           NỘP HỒ SƠ
         </v-btn>
@@ -218,6 +218,22 @@
     </v-form>
   </v-container>
   </v-content>
+  <div class="text-center">
+    <v-snackbar
+      top
+      v-model="snackbar"
+      :timeout="timeout"
+    >
+      {{ text }}
+      <v-btn
+        color="blue"
+        text
+        @click="snackbar = false"
+      >
+        Close
+      </v-btn>
+    </v-snackbar>
+  </div>
   </v-app>
 </template>
 
@@ -243,6 +259,9 @@
       menu1: false,
       menu2: false,
       valid: true,
+      snackbar: false,
+      text: 'Nộp hồ sơ thành công',
+      timeout: 2000,
       nameRules: [
         v => !!v || 'Vui lòng nhập họ tên',
         v => (v && v.length > 5) || 'Họ và tên phải lớn 5 ký tự',
