@@ -1,17 +1,10 @@
-const sequelize = require('../db')
-const Sequelize = require('sequelize')
 const bcrypt = require('bcrypt');
 
 function hashPassword (user, options) {
   const saltRounds = 8
-
   if (!user.changed('password')) {
     return
   }
-
-  // return bcrypt.hash(user.password, saltRounds, function(err, hash) {
-  //   user.setDataValue('password', hash)
-  // });
   return bcrypt.hash(user.password, saltRounds).then(function(hash) {
     console.log(user.password);
     console.log(hash);
@@ -19,41 +12,44 @@ function hashPassword (user, options) {
   });
 }
 
-function hashPassword2() {
-  bcrypt.hash(myPlaintextPassword, saltRounds, function(err, hash) {
-    // Store hash in your password DB.
-  });
-}
-
-const User = sequelize.define('user', {
-  email: {
-    type: Sequelize.STRING,
-    unique: true
+module.exports = (sequelize, DataTypes) => {
+  const User = sequelize.define('user', {
+    id: {
+      type: DataTypes.UUID,
+      primaryKey: true,
+    },
+    email: {
+      type: DataTypes.STRING,
+      unique: true,
+      required: true,
+      len: [7, 100],
+      isEmail: true
+    },
+    password: {
+      type: DataTypes.STRING,
+      required: true
+    },
+    role_id: {
+      type: DataTypes.INTEGER,
+      required: true,
+      allowNull: false
+    }
   },
-  password: {
-    type: Sequelize.STRING
+  {
+    underscored: true
   },
-  role: {
-    type: Sequelize.STRING
+  {
+    hooks: {
+      //beforeCreate: hashPassword,
+      //beforeUpdate: hashPassword,
+      beforeSave: hashPassword
+    }
   }
-},
-{
-  hooks: {
-    //beforeCreate: hashPassword,
-    //beforeUpdate: hashPassword,
-    beforeSave: hashPassword
-  }
-})
+  )
 
-User.prototype.comparePassword = function (password) {
-  console.log(password)
-  console.log(this.password)
-  return bcrypt.compare(password, this.password);
+  User.prototype.comparePassword = function (password) {
+    return bcrypt.compare(password, this.password);
+  }
+  User.associate = function (models) {}
+  return User
 }
-
-User.sync()
-  .then(() => console.log('User table created successfully'))
-  .catch(err => console.log('oooh, did you enter wrong database credentials?'));
-
-
-module.exports = User;

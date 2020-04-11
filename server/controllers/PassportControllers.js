@@ -1,5 +1,4 @@
-const Passport = require('../models/PassportModels')
-
+const {Passport} = require('../models')
 
 // exports.passport = function(req, res, next) {
 //   Passport.create(req.body)
