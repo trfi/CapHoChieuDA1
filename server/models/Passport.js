@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const Passport = sequelize.define('passport', {
+  const Passport = sequelize.define('Passport', {
     id_congdan: {
       type: DataTypes.INTEGER,
     },
@@ -84,7 +84,7 @@ module.exports = (sequelize, DataTypes) => {
     ngaysinh_vc: {
       type: DataTypes.DATEONLY,
     },
-    tinhtrang: {
+    trangthai: {
       type: DataTypes.STRING,
     },
     hansudung: {
@@ -93,7 +93,11 @@ module.exports = (sequelize, DataTypes) => {
     tinhtranghsd: {
       type: DataTypes.STRING,
     },
-  })
+  },
+  {
+    underscored: true
+  }
+  )
   Passport.associate = function (models) {}
   return Passport
 }

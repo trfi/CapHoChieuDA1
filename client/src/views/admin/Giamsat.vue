@@ -1,8 +1,8 @@
 <template>
   <div class="dashboard">
-    <h3 class="subheading grey--text">Dashboard</h3>
+    <h3 class="subheading grey--text">Giám sát</h3>
 
-    <v-container class="my-5" style="max-width:1000px" v-if="role == 'Adminstrator'">
+    <v-container class="my-5" style="max-width:1000px">
       <v-card flat v-for="passport in passports" :key="passport.title">
         <v-layout row wrap :class="`pa-3 passport ${passport.trangthai}`">
           <v-flex xs6 sm5 md4>
@@ -30,6 +30,22 @@
         <v-divider></v-divider>
       </v-card>
     </v-container>
+    <div class="text-center ma-2">
+      <v-snackbar
+        v-model="snackbar"
+        top
+        :color="snackbar_color"
+      >
+        {{ snackbar_text }}
+        <v-btn
+          color="black"
+          text
+          @click="snackbar = false"
+        >
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </v-snackbar>
+    </div>
   </div>
 </template>
 
@@ -40,6 +56,9 @@ export default {
   data () {
     return {
       passports: {},
+      snackbar: false,
+      snackbar_text: '',
+      snackbar_color: '',
       role: ''
     }
   },

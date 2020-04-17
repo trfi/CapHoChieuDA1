@@ -16,8 +16,8 @@
           >
             <v-card class="elevation-12">
               <v-toolbar
+                color="teal"
                 dark
-                flat
               >
                 <v-icon left>mdi-vuetify</v-icon>
                 <v-toolbar-title>Login Admin Dashboard</v-toolbar-title>
@@ -72,7 +72,7 @@
               </v-card-text>
               <v-card-actions>
                 <v-spacer />
-                <v-btn width="100px" dark @click="login">Login</v-btn>
+                <v-btn width="100px" color="teal" dark @click="login">Login</v-btn>
               </v-card-actions>
             </v-card>
           </v-col>
@@ -116,6 +116,7 @@ export default {
         localStorage.setItem('isUserLoggedIn', true)
         localStorage.setItem('user', response.data.user['email'])
         localStorage.setItem('role', response.data.user['role'])
+        localStorage.setItem('role_id', response.data.user['role_id'])
         window.location.href = '/admin/dashboard/index'
       } catch (error) {
         this.error = error.response.data.error

@@ -28,6 +28,11 @@ const routes = [
         name: 'Luutru',
         path: 'luutru',
         component: () => import('@/views/admin/Luutru'),
+      },
+      {
+        name: 'Giamsat',
+        path: 'giamsat',
+        component: () => import('@/views/admin/Giamsat'),
       }
     ]
   },
@@ -40,9 +45,14 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
   {
-    path: '/passport',
+    path: '/',
+    name: 'Home',
+    component: () => import('@/views/Home')
+  },
+  {
+    path: '/passport/declaration',
     name: 'Passport',
-    component: () => import('@/views/Passport')
+    component: () => import('@/views/PassportDeclaration')
   },
   {
     path: '/admin/login',

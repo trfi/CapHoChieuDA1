@@ -1,10 +1,10 @@
 module.exports = (sequelize, DataTypes) => {
-  const Role = sequelize.define('role', {
+  const Role = sequelize.define('Role', {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true
     },
-    role_name: {
+    role: {
       type: DataTypes.STRING,
       required: true,
       allowNull: false
@@ -15,6 +15,8 @@ module.exports = (sequelize, DataTypes) => {
   }
   )
 
-  Role.associate = function (models) {}
+  Role.associate = function (models) {
+
+  }
   return Role
 }

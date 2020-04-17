@@ -1,4 +1,5 @@
 const {User} = require('../models')
+const {Role} = require('../models')
 const jwt = require('jsonwebtoken')
 const config = require('../config/config')
 
@@ -9,10 +10,10 @@ function jwtSignUser (user) {
   })
 }
 
-
 module.exports = {
   async register (req, res) {
     try {
+      console.log(req.body);
       const user = await User.create(req.body)
       const userJson = user.toJSON()
       res.send({
@@ -40,7 +41,6 @@ module.exports = {
         })
       }
       const isPasswordValid = await user.comparePassword(password)
-      console.log(isPasswordValid);
       if (!isPasswordValid) {
         return res.status(403).send({
           error: 'The login information was incorrect. Wrong password'
@@ -48,11 +48,21 @@ module.exports = {
       }
 
       const userJson = user.toJSON()
+      
+      const role = await Role.findOne({
+        where: {
+          id: user['role_id']
+        }
+      })
+      
+      userJson['role'] = role['role']
+      console.log(userJson)
       res.send({
         user: userJson,
         token: jwtSignUser(userJson)
       })
     } catch (err) {
+      console.log(err)
       res.status(500).send({
         error: 'An error has occured trying to log in'
       })

@@ -14,7 +14,7 @@ const sequelize = new Sequelize({
     charset: 'utf8mb4',
     collate: 'utf8mb4_general_ci'
   }
-});
+})
 
 fs
   .readdirSync(__dirname)
@@ -36,10 +36,18 @@ Object.keys(db).forEach(function (modelName) {
 db.sequelize = sequelize
 db.Sequelize = Sequelize
 
-db.role.hasMany(db.user, {
+db.Role.hasMany(db.User, {
   foreignKey: 'role_id'
 })
-db.user.belongsTo(db.role)
+db.User.belongsTo(db.Role, {
+  foreignKey: 'role_id'
+})
+
+db.Passport.hasOne(db.Archive, {
+  foreignKey: 'passport_id'
+})
+db.Archive.belongsTo(db.Passport, {
+})
 
 sequelize
   .authenticate()

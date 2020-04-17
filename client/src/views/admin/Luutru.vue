@@ -4,13 +4,13 @@
 
     <v-container class="my-5" style="max-width:900px">
       
-      <v-card flat v-for="passport in passports" :key="passport.title">
-        <v-layout row wrap :class="`pa-3 passport ${passport.tinhtrang}`">
-          <v-flex xs12 md3>
+      <v-card flat v-for="(passport, index) in passports" :key="passport.title">
+        <v-layout row wrap :class="`pa-3 passport ${passport.trangthai}`">
+          <v-flex xs6 sm4 md3>
             <div class="caption grey--text">Họ tên</div>
             <div>{{ passport.hoten }}</div>
           </v-flex>
-          <v-flex xs6 sm4 md2>
+          <v-flex xs3 sm2 md2>
             <div class="caption grey--text">Giới tính</div>
             <div>{{ passport.gioitinh }}</div>
           </v-flex>
@@ -22,9 +22,25 @@
             <div class="caption grey--text">Địa chỉ thường trú</div>
             <div>{{ passport.dcthuongtru }}</div>
           </v-flex>
-          <v-flex xs2 sm4 md2>
+          <v-flex xs6 sm4 md2>
             <div class="right">
-              <v-chip small  :class="`${passport.tinhtrang} white--text my-2 caption`">{{ passport.tinhtrang }}</v-chip>
+              <v-chip small v-bind:class="passport.trangthai" class="white--text my-2 caption">{{ passport.trangthai | changeStatus }}</v-chip>
+            </div>
+          </v-flex>
+          <v-flex xs6 sm4 md1>
+            <div class="right">
+              <v-btn x-small icon fab color="teal" 
+                @click="archive(passport, true, index)"
+                v-tooltip="{ content: 'Lưu trữ' }"
+              >
+                <v-icon>mdi-check-outline</v-icon>
+              </v-btn>
+              <v-btn x-small icon fab color="red" 
+                @click="archive(passport, false, index)"
+                v-tooltip="{ content: 'Xóa hộ chiếu' }"
+              >
+                <v-icon>mdi-close-outline</v-icon>
+              </v-btn>
             </div>
           </v-flex>
         </v-layout>
@@ -43,32 +59,72 @@ export default {
   data () {
     return {
       passports: {},
+      isApproved: false
     }
   },
-  async mounted () {
-    this.passports = (await PassportServices.getAll()).data
-    console.log(this.passports)
+  filters: {
+    changeText(str) {
+      return str.normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/đ/g, 'd').replace(/Đ/g, 'D')
+        .replace(/ /g, '-')
+        .toLowerCase()
+    },
+    changeStatus(status) {
+      if (status.includes('approved')) return 'Đã xét duyệt'
+      else if (status.includes('canceled')) return 'Không xét duyệt'
+      else if (status.includes('archived')) return 'Đã lưu trữ'
+      else return ''
+    }
+  },
+  methods: {
+    async archive(passport, isArchive, index) {
+      let status = ''
+      try {
+        if (isArchive) {
+          status = 'gs archived'
+        }
+        else {
+          status = 'gs deleted'
+          this.passports.splice(index, 1)
+        }
+        passport.trangthai = status
+        PassportServices.archive(passport.id, {isArchive, status})
+      } 
+      catch (error) {
+        this.error = error.response.data.error
+      }
+    },
+  },
+  async mounted () {   
+    this.passports = (await PassportServices.getByStatus('lt')).data
   }
 }
 </script>
 
 <style>
-.passport.complete{
+.passport.approved{
   border-left: 4px solid #3cd1c2;
 }
-.passport.waiting{
-  border-left: 4px solid #ffaa2c;
+.passport.archived{
+  border-left: 4px solid #ffc70d;
 }
-.passport.cancel{
+.passport.canceled{
   border-left: 4px solid #f83e70;
 }
-div.right > .v-chip.complete{
+.passport.deleted{
+  border-left: 4px solid red;
+}
+div.right > .v-chip.approved{
   background: #3cd1c2;
 }
-div.right > .v-chip.waiting{
-  background: #ffaa2c;
+div.right > .v-chip.archived{
+  background: #ffc70d;
 }
-div.right > .v-chip.cancel{
+div.right > .v-chip.canceled{
   background: #f83e70;
+}
+div.right > .v-chip.deleted{
+  background: red;
 }
 </style>

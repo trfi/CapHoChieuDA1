@@ -10,7 +10,7 @@
   export default {
     name: 'DashboardIndex',
     components: {
-      DashboardCoreAppBar: () => import('../../components/Navbar'),
+      DashboardCoreAppBar: () => import('@/components/admin/Navbar'),
       DashboardCoreView: () => import('../admin/View'),
     },
 

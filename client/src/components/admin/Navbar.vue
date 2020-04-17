@@ -4,6 +4,7 @@
       app
       disable-route-watcher
       v-model="drawer"
+      color="teal"
       dark
       >
         <v-list
@@ -78,10 +79,7 @@ export default {
       drawer: true,
       clipped: false,
       items: [
-        { icon: 'mdi-view-dashboard', title: 'Dashboard', route: '/admin/dashboard/index' },
-        { icon: 'mdi-account-search', title: 'Xác thực', route: '/admin/dashboard/xacthuc' },
-        { icon: 'mdi-account-check', title: 'Xét duyệt', route: '/admin/dashboard/xetduyet' },
-        { icon: 'mdi-content-save-all', title: 'Lưu trữ', route: '/admin/dashboard/luutru' }
+        { icon: 'mdi-view-dashboard', title: 'Dashboard', route: '/admin/dashboard/index' }
       ],
       email: '',
       role: ''
@@ -102,18 +100,28 @@ export default {
   },
   mounted () {
     this.role = localStorage.getItem('role')
+    this.role_id = localStorage.getItem('role_id')
     this.email = localStorage.getItem('user')
-    if (this.role == 'XT') {
-      this.items.splice(3, 1)
-      this.items.splice(2, 1)
+    if (this.role_id == 1) {
+      this.items = [
+        { icon: 'mdi-view-dashboard', title: 'Dashboard', route: '/admin/dashboard/index' },
+        { icon: 'mdi-account-search', title: 'Xác thực', route: '/admin/dashboard/xacthuc' },
+        { icon: 'mdi-account-check', title: 'Xét duyệt', route: '/admin/dashboard/xetduyet' },
+        { icon: 'mdi-content-save-all', title: 'Lưu trữ', route: '/admin/dashboard/luutru' },
+        { icon: 'mdi-format-list-checks', title: 'Giám sát', route: '/admin/dashboard/giamsat' }
+      ]
     }
-    else if (this.role == 'XD') {
-      this.items.splice(3, 1)
-      this.items.splice(1, 1)
+    else if (this.role_id == 2) {
+      this.items.push({ icon: 'mdi-account-search', title: 'Xác thực', route: '/admin/dashboard/xacthuc' })
     }
-    else if (this.role == 'LT') {
-      this.items.splice(2, 1)
-      this.items.splice(1, 1)
+    else if (this.role_id == 3) {
+      this.items.push({ icon: 'mdi-account-check', title: 'Xét duyệt', route: '/admin/dashboard/xetduyet' })
+    }
+    else if (this.role_id == 4) {
+      this.items.push({ icon: 'mdi-content-save-all', title: 'Lưu trữ', route: '/admin/dashboard/luutru' })
+    }
+    else if (this.role_id == 5) {
+      this.items.push({ icon: 'mdi-format-list-checks', title: 'Giám sát', route: '/admin/dashboard/giamsat' })
     }
   }
 }

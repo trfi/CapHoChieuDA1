@@ -5,7 +5,7 @@ module.exports = {
     const schema = Joi.object({
       email: Joi.string().email(),
       password: Joi.string().min(6).max(32),
-      role: Joi.string()
+      role_id: Joi.number()
     })
 
     const {error} = schema.validate(req.body)

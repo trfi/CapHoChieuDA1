@@ -3,14 +3,16 @@ const router = express.Router()
 const passport = require('../controllers/PassportControllers')
 const AuthenticationController = require('../controllers/AuthenticationController')
 const AuthenticationControllerPolicy = require('../policies/AuthenticationControllerPolicy')
-const path = require('path');
 
-router.get('/', function(req, res) {
-  res.sendFile('/client/dist/index.html', {root: '../'});
-});
-router.get('/passport', passport.view)
+
+router.get('/passport', passport.viewAll)
+router.get('/passport/:status', passport.viewByStatus)
 router.post('/passport', passport.createNew)
 router.post('/register', AuthenticationControllerPolicy.register, AuthenticationController.register)
 router.post('/login', AuthenticationController.login)
+router.post('/passport/authenticate/:id', passport.authenticate)
+router.post('/passport/approve/:id', passport.approve)
+router.post('/passport/archive/:id', passport.archive)
+router.post('/passport/lookup', passport.lookup)
 
 module.exports = router;

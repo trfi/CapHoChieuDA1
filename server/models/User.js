@@ -1,21 +1,20 @@
 const bcrypt = require('bcrypt');
 
-function hashPassword (user, options) {
+function hashPassword (User, options) {
   const saltRounds = 8
-  if (!user.changed('password')) {
+  if (!User.changed('password')) {
     return
   }
-  return bcrypt.hash(user.password, saltRounds).then(function(hash) {
-    console.log(user.password);
-    console.log(hash);
-    user.setDataValue('password', hash)
+  return bcrypt.hash(User.password, saltRounds).then(function(hash) {
+    User.setDataValue('password', hash)
   });
 }
 
 module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define('user', {
+  const User = sequelize.define('User', {
     id: {
-      type: DataTypes.UUID,
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
       primaryKey: true,
     },
     email: {
@@ -26,8 +25,7 @@ module.exports = (sequelize, DataTypes) => {
       isEmail: true
     },
     password: {
-      type: DataTypes.STRING,
-      required: true
+      type: DataTypes.STRING
     },
     role_id: {
       type: DataTypes.INTEGER,
@@ -36,13 +34,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   },
   {
-    underscored: true
-  },
-  {
     hooks: {
-      //beforeCreate: hashPassword,
+      beforeCreate: hashPassword,
       //beforeUpdate: hashPassword,
-      beforeSave: hashPassword
+      //beforeSave: hashPassword
     }
   }
   )
@@ -50,6 +45,8 @@ module.exports = (sequelize, DataTypes) => {
   User.prototype.comparePassword = function (password) {
     return bcrypt.compare(password, this.password);
   }
-  User.associate = function (models) {}
+  User.associate = function (models) {
+    
+  }
   return User
 }
