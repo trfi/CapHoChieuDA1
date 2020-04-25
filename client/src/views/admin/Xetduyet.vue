@@ -46,53 +46,26 @@
         </v-layout>
         <v-divider></v-divider>
       </v-card>
-
+      <Pagination :page.sync="page" :totalPage="totalPage" />
     </v-container>
-    <div class="text-center ma-2">
-      <v-snackbar
-        v-model="snackbar"
-        top
-        :color="snackbar_color"
-      >
-        {{ snackbar_text }}
-        <v-btn
-          color="black"
-          text
-          @click="snackbar = false"
-        >
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
-      </v-snackbar>
-    </div>
+
+    <Snackbar :snackbar="snackbar" :snackbar_props="snackbar_props" />
   </div>
 </template>
 
 <script>
 import PassportServices from '@/services/PassportServices'
+import {AdminMixin} from '@/mixin/AdminMixin'
 
 export default {
+  mixins: [AdminMixin],
+  components: {
+    Snackbar: () => import('@/components/Snackbar'),
+    Pagination: () => import('@/components/Pagination')
+  },
   data () {
     return {
-      passports: {},
-      isApproved: false,
-      snackbar: false,
-      snackbar_text: '',
-      snackbar_color: ''
-    }
-  },
-  filters: {
-    changeText(str) {
-      return str.normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .replace(/đ/g, 'd').replace(/Đ/g, 'D')
-        .replace(/ /g, '-')
-        .toLowerCase()
-    },
-    changeStatus(status) {
-      if (status.includes('waiting')) return 'Chờ xét duyệt'
-      else if (status.includes('complete')) return 'Đã xét duyệt'
-      else if (status.includes('cancel')) return 'Không xét duyệt'
-      else return ''
+      status: 'xd',
     }
   },
   methods: {
@@ -118,9 +91,6 @@ export default {
         this.error = error.response.data.error
       }
     },
-  },
-  async mounted () {   
-    this.passports = (await PassportServices.getByStatus('xd')).data
   }
 }
 </script>

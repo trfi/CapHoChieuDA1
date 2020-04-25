@@ -39,42 +39,27 @@
         </v-layout>
         <v-divider></v-divider>
       </v-card>
+      <Pagination :page.sync="page" :totalPage="totalPage" />
     </v-container>
-    <div class="text-center ma-2">
-      <Snackbar :snackbar="snackbar" :snackbar_props="snackbar_props" />
-    </div>
+
+    <Snackbar :snackbar="snackbar" :snackbar_props="snackbar_props" />
   </div>
 </template>
 
 <script>
 import PassportServices from '@/services/PassportServices'
+import {AdminMixin} from '@/mixin/AdminMixin'
 
 export default {
+  mixins: [AdminMixin],
   components: {
     DialogPassportDetail: () => import('@/components/admin/DialogPassportDetail'),
-    Snackbar: () => import('@/components/Snackbar')
+    Snackbar: () => import('@/components/Snackbar'),
+    Pagination: () => import('@/components/Pagination')
   },
   data () {
     return {
-      passports: {},
-      snackbar: false,
-      snackbar_props: {},
-      dialog: false
-    }
-  },
-  filters: {
-    changeText(str) {
-      return str.normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .replace(/đ/g, 'd').replace(/Đ/g, 'D')
-        .replace(/ /g, '-')
-        .toLowerCase()
-    },
-    changeStatus(status) {
-      if (status.includes('waiting')) return 'Chờ xác thực'
-      else if (status.includes('completed')) return 'Đã xác thực'
-      else if (status.includes('canceled')) return 'Không hợp lệ'
-      else return ''
+      status: 'xt',
     }
   },
   methods: {
@@ -94,12 +79,9 @@ export default {
           this.snackbar = true
         }
       } catch (error) {
-        this.error = error.response.data.error
+        console.error(error)
       }
-    },
-  },
-  async mounted () {   
-    this.passports = (await PassportServices.getByStatus('xt')).data
+    }
   }
 }
 </script>

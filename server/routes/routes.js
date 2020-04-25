@@ -5,9 +5,9 @@ const AuthenticationController = require('../controllers/AuthenticationControlle
 const AuthenticationControllerPolicy = require('../policies/AuthenticationControllerPolicy')
 
 
-router.get('/passport', passport.viewAll)
+router.post('/passport', passport.view)
 router.get('/passport/:status', passport.viewByStatus)
-router.post('/passport', passport.createNew)
+router.post('/passport/apply', passport.createNew)
 router.post('/register', AuthenticationControllerPolicy.register, AuthenticationController.register)
 router.post('/login', AuthenticationController.login)
 router.post('/passport/authenticate/:id', passport.authenticate)

@@ -3,10 +3,10 @@ import api from "@/services/api";
 export default {
   apply(information) {
     console.log(information)
-    return api().post("passport", information)
+    return api().post("passport/apply", information)
   },
-  getAll() {
-    return api().get('passport')
+  get(information) {
+    return api().post('passport', information)
   },
   getByStatus(status) {
     return api().get('passport/' + status)

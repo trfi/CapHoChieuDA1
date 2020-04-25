@@ -29,63 +29,28 @@
         </v-layout>
         <v-divider></v-divider>
       </v-card>
+      <Pagination :page.sync="page" :totalPage="totalPage" />
     </v-container>
-    <div class="text-center ma-2">
-      <v-snackbar
-        v-model="snackbar"
-        top
-        :color="snackbar_color"
-      >
-        {{ snackbar_text }}
-        <v-btn
-          color="black"
-          text
-          @click="snackbar = false"
-        >
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
-      </v-snackbar>
-    </div>
+    
   </div>
 </template>
 
 <script>
 import PassportServices from '@/services/PassportServices'
+import {AdminMixin} from '@/mixin/AdminMixin'
 
 export default {
+  mixins: [AdminMixin],
+  components: {
+    Pagination: () => import('@/components/Pagination')
+  },
   data () {
     return {
-      passports: {},
-      snackbar: false,
-      snackbar_text: '',
-      snackbar_color: '',
       role: ''
     }
   },
-  filters: {
-    changeText(str) {
-      return str.normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .replace(/đ/g, 'd').replace(/Đ/g, 'D')
-        .replace(/ /g, '-')
-        .toLowerCase()
-    },
-    changeStatus(status) {
-      if (status == 'xt waiting') return 'Chờ xác thực'
-      else if (status == 'xd waiting') return 'Chờ xét duyệt'
-      else if (status == 'xt completed') return 'Đã xác thực'
-      else if (status == 'xt canceled') return 'Không hợp lệ'
-      else if (status == 'lt approved') return 'Đã xét duyệt'
-      else if (status == 'lt canceled') return 'Không xét duyệt'
-      else if (status == 'gs archived') return 'Đã lưu trữ'
-      else return ''
-    }
-  },
-  methods: {
-  },
   async mounted () {
     this.role = localStorage.getItem('role')
-    this.passports = (await PassportServices.getAll()).data
   }
 }
 </script>

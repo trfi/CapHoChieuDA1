@@ -24,6 +24,7 @@
   export default {
     props: {
       passport: {},
+      dialog: Boolean
     },
   }
 </script>

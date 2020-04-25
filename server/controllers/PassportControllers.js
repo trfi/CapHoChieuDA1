@@ -8,7 +8,16 @@ const updateStatus = async (id, status) => {
     trangthai: status},
     {where: {id: id}}
   )
-};
+}
+
+const paginate = ({ page, perPage }) => {
+  const offset = (page * perPage) - perPage;
+  const limit = perPage;
+  return {
+    offset,
+    limit,
+  }
+}
 
 module.exports = {
   async createNew(req, res, next) {
@@ -17,11 +26,27 @@ module.exports = {
       res.json({ passport, msg: 'Passport account created successfully' })
     )
   },
-  async viewAll(req, res, next) {
-    Passport.findAll()
-    .then(passports =>
-      res.json(passports)
-    )
+  async view(req, res, next) {
+    try {
+      const perPage = req.body.perPage ? parseInt(req.body.perPage) : 5
+      const page = req.body.page ? parseInt(req.body.page) : 1
+      const whereObj =  req.body.status ? {
+        trangthai: {
+          [Op.like]: `${req.body.status}%`
+        }
+      } : {}
+      const {count, rows} = await Passport.findAndCountAll({
+        where: whereObj,
+        order: [
+          ['created_at', 'ASC'],
+        ],
+        ...paginate({ page, perPage }),
+      })
+      res.send({page, data: rows, total: Math.ceil((count/perPage))})
+    }
+    catch (err) {
+      next(err)
+    }
   },
   async viewByStatus(req, res) {
     const { status } = req.params;

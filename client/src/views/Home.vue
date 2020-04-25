@@ -14,7 +14,7 @@
             <v-img 
               width="100%"
               height="80%"
-              src="https://pixabay.com/get/57e6d5464b54ae14ead9827dc12e347d1422dfe05b567148702b72d1.svg">
+              src="../assets/passport_link.svg">
             </v-img>
             <v-card-actions>
               <v-btn text @click="dialog = true" v-if="i===3">
@@ -128,6 +128,3 @@ export default {
   }
 }
 </script>
-
-<style>
-</style>

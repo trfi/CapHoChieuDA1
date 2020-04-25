@@ -46,35 +46,26 @@
         </v-layout>
         <v-divider></v-divider>
       </v-card>
-
+      <Pagination :page.sync="page" :totalPage="totalPage" />
     </v-container>
-   
+
+    <Snackbar :snackbar="snackbar" :snackbar_props="snackbar_props" />
   </div>
 </template>
 
 <script>
 import PassportServices from '@/services/PassportServices'
+import {AdminMixin} from '@/mixin/AdminMixin'
 
 export default {
+  mixins: [AdminMixin],
+  components: {
+    Snackbar: () => import('@/components/Snackbar'),
+    Pagination: () => import('@/components/Pagination')
+  },
   data () {
     return {
-      passports: {},
-      isApproved: false
-    }
-  },
-  filters: {
-    changeText(str) {
-      return str.normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .replace(/đ/g, 'd').replace(/Đ/g, 'D')
-        .replace(/ /g, '-')
-        .toLowerCase()
-    },
-    changeStatus(status) {
-      if (status.includes('approved')) return 'Đã xét duyệt'
-      else if (status.includes('canceled')) return 'Không xét duyệt'
-      else if (status.includes('archived')) return 'Đã lưu trữ'
-      else return ''
+      status: 'lt'
     }
   },
   methods: {
@@ -95,9 +86,6 @@ export default {
         this.error = error.response.data.error
       }
     },
-  },
-  async mounted () {   
-    this.passports = (await PassportServices.getByStatus('lt')).data
   }
 }
 </script>
