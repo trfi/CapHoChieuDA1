@@ -2,6 +2,13 @@ const {Passport} = require('../models')
 const {Resident} = require('../models')
 const {Archive} = require('../models')
 const Op = require('sequelize').Op
+const sendMail = require('../services/SendMail')
+
+function addDays(date, days) {
+  var result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
+}
 
 const updateStatus = async (id, status) => {
   return await Passport.update({
@@ -21,9 +28,15 @@ const paginate = ({ page, perPage }) => {
 
 module.exports = {
   async createNew(req, res, next) {
-    Passport.create(req.body)
+    passport = req.body
+    let date = new Date();
+    date = addDays(date, 60)
+    passport['hansudung'] = date
+    passport['trangthai'] = 'xd waiting'
+    console.log(passport)
+    Passport.create(passport)
     .then(passport =>
-      res.json({ passport, msg: 'Passport account created successfully' })
+      res.json({ passport, msg: 'Passport created successfully' })
     )
   },
   async view(req, res, next) {
@@ -97,6 +110,15 @@ module.exports = {
       const {id} = req.params
       const {status} = req.body
       updateStatus(id, status)
+      const {email} = await Passport.findOne({attributes: ['email'], where: {id: id}})
+      console.log(email)
+      const mailOptions = {
+        from: '1923402010231@student.tdmu.edu.vn',
+        to: email,
+        subject: 'Hộ chiếu đã được xét duyệt',
+        text: `Hộ chiếu của bạn đã được xét duyệt! Mã hộ chiếu: ${id}`
+      }
+      sendMail(mailOptions)
       return res.send({
         status: 'success'
       })

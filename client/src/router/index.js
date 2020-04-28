@@ -51,8 +51,13 @@ const routes = [
   },
   {
     path: '/passport/declaration',
-    name: 'Passport',
+    name: 'Declaration',
     component: () => import('@/views/PassportDeclaration')
+  },
+  {
+    path: '/passport/faq',
+    name: 'FAQ',
+    component: () => import('@/views/FAQ')
   },
   {
     path: '/admin/login',

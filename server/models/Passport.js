@@ -90,9 +90,6 @@ module.exports = (sequelize, DataTypes) => {
     hansudung: {
       type: DataTypes.DATEONLY,
     },
-    tinhtranghsd: {
-      type: DataTypes.STRING,
-    },
   },
   {
     underscored: true

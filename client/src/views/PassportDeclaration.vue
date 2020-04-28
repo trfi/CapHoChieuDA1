@@ -15,7 +15,7 @@
           <v-text-field
             autocomplete="on"
             v-model="hoten"
-            :counter="10"
+            :counter="35"
             :rules="nameRules"
             label="1. Họ và tên"
             required
@@ -52,8 +52,16 @@
             ></v-date-picker>
           </v-menu>
         </v-col>
-        <v-col md=3>
-          <v-select
+        <v-col md=4>
+          <v-text-field
+            v-model="cmnd"
+            :rules="[
+              v => !!v || 'Vui lòng nhập nơi sinh'
+            ]"
+            label="Nơi sinh"
+            required
+          ></v-text-field>
+          <!-- <v-select
             :items="items"
             :rules="[v => !!v || 'Vui lòng chọn nơi sinh']"
             required
@@ -61,7 +69,7 @@
             v-model="noisinh"
             outlined
             dense
-          ></v-select>
+          ></v-select> -->
         </v-col>
       </v-row>
 
@@ -101,16 +109,15 @@
           </v-menu>
         </v-col>
 
-        <v-col cols="12" sm="3">
-          <v-select
-            :items="items"
-            :rules="[v => !!v || 'Vui lòng chọn nơi cấp']"
-            v-model="noicap"
-            required
+        <v-col cols="12" sm="4">
+          <v-text-field
+            v-model="cmnd"
+            :rules="[
+              v => !!v || 'Vui lòng nhập nơi cấp'
+            ]"
             label="Nơi cấp"
-            outlined
-            dense
-          ></v-select>
+            required
+          ></v-text-field>
         </v-col>
       </v-row>
 
@@ -137,52 +144,48 @@
       </v-row>
 
       <v-row justify="space-between">
-        <v-col md="3">
-          <v-select
-            :items="items"
-            :rules="[v => !!v || 'Vui lòng chọn dân tộc']"
+        <v-col md="5">
+          <v-text-field
             v-model="dantoc"
-            required
+            :rules="[
+              v => !!v || 'Vui lòng nhập dân tộc'
+            ]"
             label="5. Dân tộc"
-            outlined
-            dense
-          ></v-select>
-        </v-col>
-        <v-col md="3">
-          <v-select
-            :items="items"
-            label="6. Tôn giáo"
-            :rules="[v => !!v || 'Vui lòng chọn tôn giáo']"
-            v-model="tongiao"
             required
-            outlined
-            dense
-          ></v-select>
+          ></v-text-field>
+        </v-col>
+        <v-col md="5">
+          <v-text-field
+            v-model="tongiao"
+            :rules="[
+              v => !!v || 'Vui lòng nhập tôn giáo'
+            ]"
+            label="6. Dân tộc"
+            required
+          ></v-text-field>
         </v-col>
       </v-row>
 
       <v-row justify="space-between">
         <v-col md="5">
-          <v-select
-            :items="items"
-            :rules="[v => !!v || 'Vui lòng chọn tỉnh/TP thường trú']"
+          <v-text-field
             v-model="dcthuongtru"
-            required
+            :rules="[
+              v => !!v || 'Vui lòng nhập tỉnh/TP thường trú'
+            ]"
             label="8. Địa chỉ thường trú"
-            outlined
-            dense
-          ></v-select>
-        </v-col>
-        <v-col md="4">
-          <v-select
-            :items="items"
-            :rules="[v => !!v || 'Vui lòng chọn quận huyện thường trú']"
-            v-model="quanhuyen"
             required
+          ></v-text-field>
+        </v-col>
+        <v-col md="5">
+          <v-text-field
+            v-model="quanhuyen"
+            :rules="[
+              v => !!v || 'Vui lòng chọn quận huyện thường trú'
+            ]"
             label="Quận huyện"
-            outlined
-            dense
-          ></v-select>
+            required
+          ></v-text-field>
         </v-col>
       </v-row>
 
@@ -197,23 +200,18 @@
 
       <v-row justify="space-between">
         <v-col md="5">
-          <v-select
-            :items="items"
-            v-model="dctamgtru"
+          <v-text-field
+            v-model="dctamtru"
             label="9. Địa chỉ tạm trú"
-            outlined
-            dense
-          ></v-select>
-        </v-col>
-        <v-col md="4">
-          <v-select
-            :items="items"
-            v-model="quanhuyen_tt"
             required
+          ></v-text-field>
+        </v-col>
+        <v-col md="5">
+          <v-text-field
+            v-model="quanhuyen_tt"
             label="Quận huyện"
-            outlined
-            dense
-          ></v-select>
+            required
+          ></v-text-field>
         </v-col>
       </v-row>
 
@@ -227,7 +225,7 @@
       </v-row>
 
       <v-row justify="space-between">
-        <v-col>
+        <v-col md="4">
           <v-text-field
             v-model="nghenghiep"
             label="10. Nghề nghiệp"
@@ -242,7 +240,7 @@
       </v-row>
 
       <v-row justify="space-between">
-        <v-col>
+        <v-col md="7">
           <v-text-field
             v-model="hoten_cha"
             label="12. Họ tên cha"
@@ -258,7 +256,7 @@
               <v-text-field
                 :value="computedDateFormattedMomentjs3"
                 clearable
-                label="Ngày cấp"
+                label="Ngày sinh"
                 readonly
                 v-on="on"
                 @click:clear="ngaysinh_cha = null"
@@ -273,7 +271,7 @@
       </v-row>
 
       <v-row justify="space-between">
-        <v-col>
+        <v-col md="7">
           <v-text-field
             v-model="hoten_me"
             label="Họ tên mẹ"
@@ -289,7 +287,7 @@
               <v-text-field
                 :value="computedDateFormattedMomentjs4"
                 clearable
-                label="Ngày cấp"
+                label="Ngày sinh"
                 readonly
                 v-on="on"
                 @click:clear="ngaysinh_me = null"
@@ -304,7 +302,7 @@
       </v-row>
 
       <v-row justify="space-between">
-        <v-col>
+        <v-col md="7">
           <v-text-field
             v-model="hoten_vc"
             label="Họ tên Vợ/Chồng"

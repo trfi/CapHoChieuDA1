@@ -74,14 +74,14 @@ export default {
       try {
         if (isApproved) {
           status = 'lt approved'
-          this.snackbar_text = 'Xét duyệt thành công'
-          this.snackbar_color = '#3cd1c2'
+          this.snackbar_props.text = 'Xét duyệt thành công'
+          this.snackbar_props.color = '#3cd1c2'
           this.snackbar = true
         }
         else {
           status = 'lt canceled'
-          this.snackbar_text = 'Không duyệt thành công'
-          this.snackbar_color = '#ffaa2c'
+          this.snackbar_props.text = 'Không duyệt thành công'
+          this.snackbar_props.color = '#ffaa2c'
           this.snackbar = true
         }
         passport.trangthai = status
@@ -89,6 +89,9 @@ export default {
       } 
       catch (error) {
         this.error = error.response.data.error
+        this.snackbar_text = 'Có lỗi xảy ra. Vui lòng thử lại!'
+        this.snackbar_color = red
+        this.snackbar = true
       }
     },
   }
@@ -96,7 +99,7 @@ export default {
 </script>
 
 <style>
-.passport.completed{
+.passport.approved{
   border-left: 4px solid #3cd1c2;
 }
 .passport.waiting{
@@ -105,7 +108,7 @@ export default {
 .passport.canceled{
   border-left: 4px solid #f83e70;
 }
-div.right > .v-chip.completed{
+div.right > .v-chip.approved{
   background: #3cd1c2;
 }
 div.right > .v-chip.waiting{

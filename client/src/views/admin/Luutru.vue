@@ -74,10 +74,16 @@ export default {
       try {
         if (isArchive) {
           status = 'gs archived'
+          this.snackbar_props.text = 'Lưu trữ thành công'
+          this.snackbar_props.color = '#3cd1c2'
+          this.snackbar = true
         }
         else {
           status = 'gs deleted'
           this.passports.splice(index, 1)
+          this.snackbar_props.text = 'Không lưu trữ'
+          this.snackbar_props.color = '#ffaa2c'
+          this.snackbar = true
         }
         passport.trangthai = status
         PassportServices.archive(passport.id, {isArchive, status})

@@ -17,7 +17,10 @@
               src="../assets/passport_link.svg">
             </v-img>
             <v-card-actions>
-              <v-btn text @click="dialog = true" v-if="i===3">
+              <v-btn text @click="dialogLookup = true" v-if="i===3">
+                {{item.title}}
+              </v-btn>
+              <v-btn text @click="dialogUpdate = true" v-else-if="i===2">
                 {{item.title}}
               </v-btn>
               <v-btn text :to="item.route" v-else>
@@ -35,7 +38,33 @@
       </template>
       </v-row>
     </v-container>
-    <v-dialog v-model="dialog" max-width="600px">
+    <v-dialog v-model="dialogUpdate" max-width="600px">
+      <v-card>
+        <v-form @submit.prevent="lookup">
+        <v-card-title>
+          <span class="headline">Bổ sung, sửa đổi thông tin đã khai</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col cols="12">
+                <v-text-field v-model.number="updateInfo" 
+                  label="Nhập số CMND hoặc mã Hộ chiếu*" required>
+                </v-text-field>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn type="submit" color="blue darken-1" text>
+            Tìm kiếm
+          </v-btn>
+        </v-card-actions>
+        </v-form>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="dialogLookup" max-width="600px">
       <v-card>
         <v-form @submit.prevent="lookup">
         <v-card-title>
@@ -100,15 +129,16 @@ export default {
   },
   data () {
     return {
-      dialog: false,
+      dialogUpdate: false,
+      dialogLookup: false,
       dialogInfo: false,
       lookupInfo: null,
       statusInfo: {},
       items: [
         { icon: 'mdi-view-dashboard', title: 'Khai thông tin tờ khai đề nghị cấp hộ chiếu', route: '/passport/declaration' },
-        { icon: 'mdi-account-search', title: 'Hướng dẫn thủ tục' },
+        { icon: 'mdi-account-search', title: 'Hướng dẫn thủ tục', route: '/passport/faq' },
         { icon: 'mdi-account-check', title: 'Sửa đổi, bổ sung thông tin đã khai' },
-        { icon: 'mdi-content-save-all', title: 'Tra cứu tình trạng kết quả hộ chiếu', }
+        { icon: 'mdi-content-save-all', title: 'Tra cứu tình trạng kết quả hộ chiếu' }
       ],
     }
   },
@@ -118,7 +148,7 @@ export default {
         const response = await PassportServices.lookup({lookupInfo: this.lookupInfo})
         console.log(response.data)
         this.statusInfo = response.data    
-        this.dialog = false
+        this.dialogLookup = false
         this.dialogInfo = true
       }
       catch(error) {
