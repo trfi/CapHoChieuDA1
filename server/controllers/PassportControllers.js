@@ -32,7 +32,7 @@ module.exports = {
     let date = new Date();
     date = addDays(date, 60)
     passport['hansudung'] = date
-    passport['trangthai'] = 'xd waiting'
+    passport['trangthai'] = 'xt waiting'
     console.log(passport)
     Passport.create(passport)
     .then(passport =>

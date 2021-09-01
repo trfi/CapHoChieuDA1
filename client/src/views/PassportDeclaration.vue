@@ -54,7 +54,7 @@
         </v-col>
         <v-col md=4>
           <v-text-field
-            v-model="cmnd"
+            v-model="noisinh"
             :rules="[
               v => !!v || 'Vui lòng nhập nơi sinh'
             ]"
@@ -111,7 +111,7 @@
 
         <v-col cols="12" sm="4">
           <v-text-field
-            v-model="cmnd"
+            v-model="noicap"
             :rules="[
               v => !!v || 'Vui lòng nhập nơi cấp'
             ]"
@@ -160,7 +160,7 @@
             :rules="[
               v => !!v || 'Vui lòng nhập tôn giáo'
             ]"
-            label="6. Dân tộc"
+            label="6. Tôn giáo"
             required
           ></v-text-field>
         </v-col>
