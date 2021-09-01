@@ -23,4 +23,4 @@ export default {
   lookup(information) {
     return api().post(`passport/lookup`, information)
   }
-};
+}
